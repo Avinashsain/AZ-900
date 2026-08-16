@@ -41,6 +41,13 @@ Everything from your original notes, deduplicated, cross-checked, and grouped so
 | Minimum necessary permissions | **RBAC / Least Privilege** |
 | "Verify every request" model | **Zero Trust** |
 | Baseline load vs. unpredictable peak load | **Reserved VM (baseline) + Pay-as-you-go (peak)** |
+| Datacenter fails, same region | **Availability Zones** |
+| Entire region is lost | **Region Pairs** |
+| Predictable long-term VM savings | **Reserved Instances** |
+| Track compliance with GDPR/ISO 27001 | **Microsoft Purview Compliance Manager** |
+| Design principle: eliminate single points of failure | **High Availability** |
+| Managed Hadoop / big data analytics | **HDInsight** |
+| Max VMs in a Scale Set | **1,000** (600 with a custom image) |
 
 ---
 
@@ -57,6 +64,9 @@ Everything from your original notes, deduplicated, cross-checked, and grouped so
 | Cool Tier | **Archive Tier** | Cool = infrequent but *instant* access; Archive = infrequent, *slow* (hours) retrieval |
 | ExpressRoute | **Private Endpoint** | ExpressRoute = private network path to Azure; Private Endpoint = private IP for a specific PaaS service |
 | Entra B2C | **Entra B2B** | B2B = external partner/business users; B2C = your own app's customers |
+| Availability Zones | **Region Pairs** | AZs protect against a single datacenter failing; Region Pairs protect against an entire region going down |
+| RBAC alone | **RBAC + Azure Policy** | RBAC controls *who can do what*; Policy still enforces compliance rules on top, regardless of role |
+| Reservations for unpredictable workloads | **Spot VMs / Pay-as-you-go** | Reservations only pay off for steady, predictable usage |
 
 ---
 
@@ -216,10 +226,42 @@ Everything from your original notes, deduplicated, cross-checked, and grouped so
 | Azure Policy | Enforces organizational rules/compliance |
 | Azure Blueprints | Repeatable governance templates |
 | Azure Arc | Manages hybrid/multi-cloud resources from Azure |
+| Microsoft Purview Compliance Manager | Tracks and scores compliance against standards like GDPR, ISO 27001 |
+
+### How you can deploy ARM templates
+Azure Portal • Azure PowerShell • Azure CLI • REST API / SDK — ARM accepts deployments from any of these.
+
+### Scaling limits worth memorizing
+- **Virtual Machine Scale Sets:** up to **1,000** VM instances (600 if using a custom image)
+- **High availability principle:** design so there is **no single point of failure** — this is the "why," not a specific tool
 
 ---
 
-## 9. Cost Management
+## 9. Analytics & DevOps
+
+| Service | Purpose |
+|---|---|
+| HDInsight | Managed Apache Hadoop / big-data analytics platform |
+| Azure DevOps | Pipelines, boards, repos — CI/CD and project tracking |
+
+---
+
+## 10. Grab-Bag Facts (easy to miss)
+
+- **Storage Service Encryption** encrypts Blob Storage data at rest automatically.
+- **Site-to-Site VPN** requires a **VPN device** on the on-premises side.
+- Microsoft Azure has one of the **largest global datacenter footprints** of any cloud provider.
+- **Compute resources** are billed/consumed as **CPU cycles** (processing power), not just "a VM."
+- A service in **Private Preview** requires an **invitation** to access — it isn't open to everyone.
+- The **Azure Portal** is the primary **GUI** for managing resources (vs. CLI/PowerShell for scripting).
+- Treating Azure as an extension of your on-premises datacenter (not a full migration) describes a **hybrid cloud** setup.
+- A **DDoS attack that keeps happening despite DDoS Protection** is usually a **Layer 7 (application-layer)** attack — Azure DDoS Protection Standard focuses on network-layer (L3/L4); pair it with a **WAF** for Layer 7.
+- Storing email/collaboration tools you don't manage the infrastructure or platform for (e.g., Microsoft 365) is a **SaaS** example.
+- **Cool tier** is cheaper than **Hot tier** for storage, but has a minimum retention period and slightly higher access cost per transaction.
+
+---
+
+## 11. Cost Management
 
 | Tool/Concept | Purpose |
 |---|---|
@@ -241,7 +283,7 @@ Everything from your original notes, deduplicated, cross-checked, and grouped so
 
 ---
 
-## 10. Your Practice Test Mistakes (Quick Revision)
+## 12. Your Practice Test Mistakes (Quick Revision)
 
 ### Set 1 — 8 missed questions
 
@@ -267,9 +309,48 @@ Everything from your original notes, deduplicated, cross-checked, and grouped so
 | Private Storage Access | Private Endpoint | Traffic never touches the public internet |
 | Storage Tier | Cool Tier | Infrequent access but still needs instant retrieval |
 
+### Set 3 — 10 missed questions
+
+| Topic | Correct Answer | One-line reason |
+|---|---|---|
+| Availability Zones | Separate datacenters in one region | Protects against a single datacenter failing |
+| Cost Savings | Reserved Instances | Immediate savings for predictable VM usage |
+| Compliance | Purview Compliance Manager | Tracks/scores against GDPR, ISO 27001, etc. |
+| ARM Deployment | Portal, PowerShell, CLI, REST API/SDK | ARM accepts deployment from any of these |
+| Access | RBAC | Assign roles instead of sharing passwords |
+| VM Scale Set | 1,000 VMs | 600 if using a custom image |
+| High Availability | No single point of failure | The core design principle behind HA |
+| Azure Policy | Enforces compliance regardless of role | RBAC grants access; Policy still restricts non-compliant resources |
+| SLA | Varies by service | There's no single blanket SLA for all of Azure |
+| Big Data | HDInsight | Managed Apache Hadoop platform |
+
 ---
 
-## 11. 30-Minute Final Revision Plan
+## 13. 33 Rapid-Fire Practice Answers
+
+Quick-fire items from your practice set that aren't already covered above:
+
+| # | Question | Answer |
+|---|---|---|
+| 15 | Which service model is email/collaboration software you don't manage infrastructure for? | SaaS |
+| 16 | Protects against one datacenter failing in a region | ZRS |
+| 17 | Best tier for data kept 7 years, rarely accessed | Blob Archive Tier |
+| 23 | Device needed for a Site-to-Site VPN | VPN Device (on-premises) |
+| 24 | Cloud provider with the largest global datacenter footprint | Microsoft Azure |
+| 25 | Azure used as an extension of on-prem infrastructure | Hybrid Cloud |
+| 26 | Type of attack that keeps happening despite DDoS Protection | Layer 7 (application-layer) attacks — add a WAF |
+| 27 | How Blob Storage data is encrypted at rest | Storage Service Encryption |
+| 28 | Fully managed relational database PaaS | Azure SQL Database |
+| 30 | Access requirement for a Private Preview feature | Invitation required |
+| 31 | Azure DevOps feature for CI/CD | Pipelines |
+| 32 | What compute resources are billed as | CPU cycles |
+| 33 | Primary graphical tool for managing Azure | Azure Portal |
+
+> Items 1–14 and 18–22, 29 from this set duplicate flashcards already covered in sections 1–9 above (VM pricing, PowerShell, ExpressRoute, Entra B2C, Private Endpoint, Cool Tier, Advisor, AVD, File Sync, App Insights, Defender, Tags, Entra B2B, Service Health, Region Pairs, Conditional Access, OpEx, Management Groups, VMSS limit, storage tier cost).
+
+---
+
+## 14. 30-Minute Final Revision Plan
 
 | Time | Focus |
 |---|---|
