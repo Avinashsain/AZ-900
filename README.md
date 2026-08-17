@@ -19,6 +19,7 @@ Everything from your original notes, deduplicated, cross-checked, and grouped so
 |---|---|
 | Personalized recommendations across cost/security/reliability | **Azure Advisor** |
 | Web app is slow / performance bottleneck | **Application Insights** |
+| Run queries against collected log data | **Log Analytics** |
 | Azure-wide outage notification | **Azure Service Health** |
 | One specific resource/VM is unhealthy | **Resource Health** |
 | Overall security posture / Secure Score | **Microsoft Defender for Cloud** |
@@ -219,6 +220,7 @@ Everything from your original notes, deduplicated, cross-checked, and grouped so
 | Tags | Metadata for cost tracking and organization |
 | Azure Advisor | Personalized optimization recommendations (cost, security, reliability, performance, operational excellence) |
 | Azure Monitor | Collects metrics and logs |
+| Log Analytics | Query and analyze log data collected by Azure Monitor |
 | Application Insights | Application performance monitoring (APM) |
 | Azure Service Health | Notifies of Azure-wide outages |
 | Resource Health | Status of an individual resource |
