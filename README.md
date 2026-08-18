@@ -49,6 +49,11 @@ Everything from your original notes, deduplicated, cross-checked, and grouped so
 | Design principle: eliminate single points of failure | **High Availability** |
 | Managed Hadoop / big data analytics | **HDInsight** |
 | Max VMs in a Scale Set | **1,000** (600 with a custom image) |
+| Browse/acquire third-party VM images and offers | **Azure Marketplace** |
+| SLA for 2+ VMs in the same Availability Set | **99.95%** uptime |
+| US federal/state/local/tribal government + their solution providers | **Azure Government** |
+| Process/visualize petabytes of structured + unstructured IoT data, near real time | **Azure Synapse Analytics** |
+| Extremely low-latency small, frequent read/write requests | **Azure Table Storage** (or Cosmos DB's Table API for global scale) |
 
 ---
 
@@ -68,6 +73,9 @@ Everything from your original notes, deduplicated, cross-checked, and grouped so
 | Availability Zones | **Region Pairs** | AZs protect against a single datacenter failing; Region Pairs protect against an entire region going down |
 | RBAC alone | **RBAC + Azure Policy** | RBAC controls *who can do what*; Policy still enforces compliance rules on top, regardless of role |
 | Reservations for unpredictable workloads | **Spot VMs / Pay-as-you-go** | Reservations only pay off for steady, predictable usage |
+| Azure Firewall for basic subnet traffic filtering | **Network Security Group (NSG)** | NSG is the free, basic rule-based filter; Firewall is a paid, more advanced managed service |
+| Azure Load Balancer for web attack protection | **Application Gateway's WAF** | WAF (Web Application Firewall) is an Application Gateway feature — Load Balancer doesn't have it |
+| Dev/test VMs used only 8 hrs/day, 5 days/week | **Auto-shutdown/start schedules + Pay-as-you-go** | Not worth Reserved Instances since usage isn't continuous — turn VMs off outside business hours instead |
 
 ---
 
@@ -121,7 +129,7 @@ Everything from your original notes, deduplicated, cross-checked, and grouped so
 | Cosmos DB | Globally distributed NoSQL database |
 | Data Lake Storage | Large-scale analytics storage |
 | Queue Storage | Message queuing |
-| Table Storage | NoSQL key-value store |
+| Table Storage | NoSQL key-value store; extremely low-latency for small, frequent read/write requests |
 | Storage Explorer | GUI tool for managing storage accounts |
 
 ### Storage access tiers
@@ -244,6 +252,7 @@ Azure Portal • Azure PowerShell • Azure CLI • REST API / SDK — ARM accep
 | Service | Purpose |
 |---|---|
 | HDInsight | Managed Apache Hadoop / big-data analytics platform |
+| Azure Synapse Analytics | Combines big data + data warehousing; processes/visualizes petabytes of structured and unstructured data (e.g., IoT) near real time |
 | Azure DevOps | Pipelines, boards, repos — CI/CD and project tracking |
 
 ---
@@ -260,6 +269,11 @@ Azure Portal • Azure PowerShell • Azure CLI • REST API / SDK — ARM accep
 - A **DDoS attack that keeps happening despite DDoS Protection** is usually a **Layer 7 (application-layer)** attack — Azure DDoS Protection Standard focuses on network-layer (L3/L4); pair it with a **WAF** for Layer 7.
 - Storing email/collaboration tools you don't manage the infrastructure or platform for (e.g., Microsoft 365) is a **SaaS** example.
 - **Cool tier** is cheaper than **Hot tier** for storage, but has a minimum retention period and slightly higher access cost per transaction.
+- **Azure Marketplace** is where you browse and acquire third-party VM images, apps, and other third-party offers within the Azure Portal.
+- **Azure Government** is a separate, dedicated Azure instance for US federal/state/local/tribal government entities and their solution providers, meeting compliance requirements like FedRAMP, CJIS, and ITAR.
+- **NSG (Network Security Group)** is specifically the **free** perimeter/network-boundary control that evaluates traffic in/out of a subnet against rule-based filters — Azure Firewall does similar filtering but is a paid, more advanced service.
+- Disaster recovery across regions works by **automatically replicating data to a paired region** — not by manually copying data yourself.
+- **Business Continuity / Disaster Recovery (BC/DR)** is the umbrella term for running apps and accessing data in another environment quickly after an outage.
 
 ---
 
@@ -325,6 +339,34 @@ Azure Portal • Azure PowerShell • Azure CLI • REST API / SDK — ARM accep
 | Azure Policy | Enforces compliance regardless of role | RBAC grants access; Policy still restricts non-compliant resources |
 | SLA | Varies by service | There's no single blanket SLA for all of Azure |
 | Big Data | HDInsight | Managed Apache Hadoop platform |
+
+### Set 4 — additional practice questions
+
+| Topic | Correct Answer | One-line reason |
+|---|---|---|
+| Policy enforcement scenario | Azure Policy | Prevents specific VM instance types from being used in a resource group |
+| Third-party VM images/offers | Azure Marketplace | Where you browse and acquire third-party solutions in the Portal |
+| PaaS security responsibility | Shared Responsibility Model | Microsoft secures the platform; you secure your app/data/access on App Service |
+| Real-time petabyte-scale IoT analytics | Azure Synapse Analytics | Combines big data + data warehousing for near real-time processing (not Power BI, which only visualizes) |
+| Global compliance standards (GDPR, ISO 27001) | Microsoft Purview Compliance Manager | Provides compliance status, assessments, recommendations |
+| DDoS protection tiers | Network Protection & IP Protection | The two available tiers |
+| Long-term committed-usage discount | Reserved Instances | 1- or 3-year term commitment |
+| Availability Set SLA | 99.95% uptime | For 2+ VMs in the same Availability Set |
+| Dev/test VMs, 8 hrs/day weekdays only | Auto-shutdown/start + Pay-as-you-go | Turn off outside business hours rather than reserving 24/7 capacity |
+| Hybrid cloud example | On-prem server extending storage to the cloud | Classic hybrid pattern — local infra + cloud extension |
+| Auto-scaling identical VMs with built-in load balancing | Virtual Machine Scale Sets | Scales a group of identical VMs and load-balances them automatically |
+| Low-latency small, frequent read/write database | Azure Table Storage | NoSQL key-value store built for this pattern |
+| NOT an IaaS example | Azure SQL Database | It's PaaS — fully managed, not raw infrastructure |
+| Unstructured data storage | Blob Storage | Best fit for text/binary/unstructured data |
+| Private Preview access | Invitation only | Not open to general availability |
+| Perimeter/network-boundary control | Network Security Group (NSG) | Free, rule-based filter for traffic entering/leaving a subnet |
+| Seasonal workload auto expand/shrink | Elasticity | Core cloud benefit behind this capability |
+| Naming conventions + approved-region enforcement | Azure Policy | Centralized rule enforcement across resources |
+| Restrict app access to one department only | Conditional Access | Access policy based on group membership/conditions |
+| WAF is unique to which service (vs. Load Balancer)? | Application Gateway | Adds Web Application Firewall; Load Balancer does not have this |
+| Cross-region disaster recovery mechanism | Automatic replication to a paired region | Not manual copying, not cross-tenant mirroring |
+| US federal/state/local/tribal government cloud | Azure Government | Dedicated instance meeting FedRAMP/CJIS/ITAR |
+| Quickly run apps/access data elsewhere after an outage | Business Continuity / Disaster Recovery (BC/DR) | The umbrella concept, distinct from DevOps, Policy, or reproducible deployments |
 
 ---
 
